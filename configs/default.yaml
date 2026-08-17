@@ -1,0 +1,51 @@
+# ============================================================================
+# PULSE default training configuration  (these are the EXACT settings used in
+# the paper). Values here mirror the constants in pulse/pulse_seg.py, which is
+# the single source of truth; this file documents them for reproducibility.
+# ============================================================================
+
+model:
+  backbone: facebook/dinov2-base   # DINOv2 ViT-B/14 (86M) — auto-downloaded from HF
+  decoder: DPT                     # Dense Prediction Transformer, 4 scales
+  decoder_channels: 256
+  img_size: 256                    # 2.5D input resized to 256x256
+  seg_classes: 4                   # 0=BG, 1=RV, 2=Myo, 3=LV
+  deep_supervision_weights: [1.0, 0.5, 0.25]
+
+input:
+  mode: 2.5D                       # three adjacent slices stacked as 3 channels
+  # For 2D ultrasound (CAMUS) the three channels are adjacent TEMPORAL frames.
+
+loss:
+  dice_class_weights: [0.0, 2.0, 3.0, 1.0]   # BG, RV, Myo, LV
+  ce_class_weights:   [0.1, 2.0, 3.0, 1.0]
+  lambda_lovasz: 0.5
+  lambda_boundary: 0.5
+
+training:
+  epochs: 120
+  batch_size: 16                   # paper value on A100 40GB (see README for smaller GPUs)
+  optimizer: AdamW
+  lr: 3.0e-4
+  weight_decay: 0.05
+  warmup_epochs: 8
+  lr_schedule: cosine
+  curriculum:
+    stage1_epochs: 70              # freeze first 2 ViT blocks
+    freeze_blocks: 2
+    stage2_epochs: 50              # unfreeze all; backbone LR 10-20x lower
+  seed: 42
+  cross_validation:
+    folds: 5
+    stratified_by: disease_class
+
+inference:
+  tta: 4way_flips                  # H, V, HV
+  ensemble: 5                      # average softmax over the 5 folds
+
+diagnosis:
+  n_biomarkers: 23
+  classifier: RandomForest
+  n_estimators: 600
+  class_weight: balanced
+  seed_ensemble: 10

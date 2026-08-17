@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>PULSE Cardiac MRI</title>
+<meta name="description" content="PULSE: a unified multi-task framework for cardiac MRI segmentation, diagnosis, and few-shot cross-modality clinical adaptation. IEEE JBHI 2026."/>
+<style>
+  :root{
+    --ground:#e7ecf5; --surface:#ffffff; --surface-2:#eef3fa; --chip:#ffffff;
+    --ink:#12233b; --muted:#54677f; --faint:#7e93ac;
+    --brand:#1560bd; --brand-ink:#0f4a94; --brand-soft:#dfeafa;
+    --teal:#0ea5a6; --indigo:#6a5ae0; --amber:#f59e0b;
+    --lv:#e63c46; --myo:#17b26a; --rv:#3a86ff;
+    --border:#d3deee; --shadow:0 1px 2px rgba(18,35,59,.07),0 14px 34px rgba(18,35,59,.10);
+    --radius:18px; --maxw:1040px;
+    --grad:linear-gradient(100deg,#1560bd 0%,#0ea5a6 52%,#6a5ae0 100%);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#080e1a; --surface:#111d31; --surface-2:#16233b; --chip:#f3f6fb;
+      --ink:#e9eff8; --muted:#9db0c9; --faint:#6d81a0;
+      --brand:#4f9df0; --brand-ink:#8bc0f6; --brand-soft:#122a45;
+      --teal:#2dd4bf; --indigo:#8b7bf0; --amber:#fbbf24;
+      --lv:#ff6b73; --myo:#34d98a; --rv:#6aa6ff;
+      --border:#23344c; --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px rgba(0,0,0,.5);
+      --grad:linear-gradient(100deg,#4f9df0 0%,#2dd4bf 52%,#8b7bf0 100%);
+    }
+  }
+  :root[data-theme="dark"]{
+      --ground:#080e1a; --surface:#111d31; --surface-2:#16233b; --chip:#f3f6fb;
+      --ink:#e9eff8; --muted:#9db0c9; --faint:#6d81a0;
+      --brand:#4f9df0; --brand-ink:#8bc0f6; --brand-soft:#122a45;
+      --teal:#2dd4bf; --indigo:#8b7bf0; --amber:#fbbf24;
+      --lv:#ff6b73; --myo:#34d98a; --rv:#6aa6ff;
+      --border:#23344c; --shadow:0 1px 2px rgba(0,0,0,.4),0 16px 40px rgba(0,0,0,.5);
+      --grad:linear-gradient(100deg,#4f9df0 0%,#2dd4bf 52%,#8b7bf0 100%);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.65;font-size:17px;-webkit-font-smoothing:antialiased;
+    background:
+      radial-gradient(980px 560px at 10% -6%, rgba(21,96,189,.16), transparent 58%),
+      radial-gradient(900px 560px at 92% 2%, rgba(14,165,166,.15), transparent 58%),
+      radial-gradient(1000px 680px at 50% 116%, rgba(106,90,224,.14), transparent 60%),
+      var(--ground);
+    background-attachment:fixed;}
+  .serif{font-family:"Iowan Old Style","Charter","Palatino Linotype",Georgia,serif;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px;}
+  a{color:var(--brand);text-decoration:none;} a:hover{text-decoration:underline;}
+  h2{font-size:1.75rem;letter-spacing:-.015em;margin:.1em 0 .35em;text-wrap:balance;}
+  p{color:var(--ink);} p.muted{color:var(--muted);}
+  section{padding:52px 0;}
+  .eyebrow{font-size:.72rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase;display:inline-block;margin-bottom:12px;}
+  .eyebrow.b{color:var(--brand);} .eyebrow.t{color:var(--teal);} .eyebrow.i{color:var(--indigo);}
+  .eyebrow.r{color:var(--lv);} .eyebrow.g{color:var(--myo);}
+
+  .toggle{position:fixed;top:16px;right:16px;z-index:30;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--border);background:var(--surface);color:var(--ink);cursor:pointer;box-shadow:var(--shadow);font-size:18px;}
+  .toggle:hover{border-color:var(--brand);}
+
+  /* ---------- hero with flanking logos ---------- */
+  header.hero{padding:64px 0 46px;}
+  .hero-grid{display:grid;grid-template-columns:170px 1fr 170px;align-items:center;gap:26px;}
+  @media (max-width:920px){ .hero-grid{grid-template-columns:1fr;} }
+  .logo-col{display:flex;flex-direction:column;gap:16px;}
+  .logo-col.left{align-items:flex-end;} .logo-col.right{align-items:flex-start;}
+  @media (max-width:920px){
+    .logo-col{flex-direction:row;flex-wrap:wrap;justify-content:center;align-items:center;}
+    .logo-col.left{order:3;} .logo-col.right{order:4;margin-top:-4px;}
+  }
+  .logo-chip{background:var(--chip);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);
+    height:92px;width:150px;display:flex;align-items:center;justify-content:center;padding:14px;}
+  .logo-chip img{max-height:56px;max-width:120px;width:auto;height:auto;display:block;}
+  @media (max-width:920px){ .logo-chip{height:78px;width:128px;} .logo-chip img{max-height:46px;max-width:100px;} }
+
+  .hero-center{text-align:center;}
+  .ecg{width:100%;max-width:520px;height:52px;display:block;margin:0 auto 16px;}
+  .ecg path{fill:none;stroke:url(#eg);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round;
+    stroke-dasharray:1500;stroke-dashoffset:1500;animation:draw 2.8s ease-out .2s forwards;}
+  @keyframes draw{to{stroke-dashoffset:0}}
+  @media (prefers-reduced-motion: reduce){.ecg path{animation:none;stroke-dashoffset:0;}}
+  .badge{display:inline-block;font-size:.72rem;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
+    color:#fff;background:var(--grad);padding:6px 15px;border-radius:999px;box-shadow:var(--shadow);}
+  .title{font-size:clamp(3rem,10vw,5.6rem);font-weight:800;letter-spacing:-.04em;line-height:.9;margin:.16em 0 .06em;
+    background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .subtitle{font-size:clamp(1.02rem,2.4vw,1.32rem);font-weight:550;max-width:760px;margin:.2em auto 0;text-wrap:balance;}
+  .authors{color:var(--muted);margin:20px auto 2px;max-width:720px;font-size:1.02rem;}
+  .authors b{color:var(--ink);font-weight:650;} .authors sup{color:var(--brand);font-weight:700;}
+  .affil{color:var(--faint);font-size:.88rem;max-width:760px;margin:.35em auto 0;line-height:1.55;}
+  .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:26px;}
+  .btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:999px;font-weight:650;font-size:.95rem;
+    border:1px solid var(--border);background:var(--surface);color:var(--ink);box-shadow:var(--shadow);transition:transform .12s ease,border-color .12s ease;}
+  .btn:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--brand);}
+  .btn.primary{background:var(--grad);color:#fff;border:none;} .btn svg{width:17px;height:17px;}
+  .triad{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-top:24px;font-size:.88rem;color:var(--muted);}
+  .triad span{display:inline-flex;align-items:center;gap:8px;font-weight:600;}
+  .dot{width:13px;height:13px;border-radius:4px;display:inline-block;}
+
+  /* ---------- stat band ---------- */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr);}}
+  .stat{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px 18px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+  .stat::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;}
+  .stat.b::before{background:var(--brand);} .stat.g::before{background:var(--myo);}
+  .stat.t::before{background:var(--teal);} .stat.i::before{background:var(--indigo);}
+  .stat .num{font-family:"Iowan Old Style",Georgia,serif;font-size:2.5rem;font-weight:800;line-height:1;letter-spacing:-.02em;}
+  .stat.b .num{color:var(--brand);} .stat.g .num{color:var(--myo);} .stat.t .num{color:var(--teal);} .stat.i .num{color:var(--indigo);}
+  .stat .lab{color:var(--muted);font-size:.9rem;margin-top:8px;}
+
+  /* ---------- panels ---------- */
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:30px 30px;}
+  .lead{font-size:1.12rem;}
+  figure{margin:0;}
+  .fig{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);}
+  .fig img{width:100%;height:auto;display:block;border-radius:10px;}
+  figcaption{color:var(--muted);font-size:.9rem;margin-top:12px;text-align:center;}
+  .figlabel{font-size:.72rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--brand);margin-bottom:8px;display:block;}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px;} @media (max-width:760px){.grid2{grid-template-columns:1fr;}}
+
+  /* ---------- framework 3-step ---------- */
+  .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;}
+  @media (max-width:760px){.flow{grid-template-columns:1fr;}}
+  .step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);text-align:center;}
+  .step .ic{width:54px;height:54px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#fff;}
+  .step .ic svg{width:28px;height:28px;}
+  .step h3{margin:.1em 0 .3em;font-size:1.15rem;} .step p{color:var(--muted);font-size:.94rem;margin:0;}
+
+  /* ---------- tables ---------- */
+  .tbl-scroll{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);background:var(--surface);}
+  table{width:100%;border-collapse:collapse;font-size:.95rem;font-variant-numeric:tabular-nums;}
+  caption{caption-side:top;text-align:left;font-weight:700;padding:16px 18px 4px;color:var(--ink);}
+  th,td{padding:11px 16px;text-align:center;border-bottom:1px solid var(--border);}
+  th:first-child,td:first-child{text-align:left;}
+  thead th{font-size:.75rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:800;background:var(--surface-2);}
+  tbody tr:last-child td{border-bottom:none;}
+  tr.total td{background:var(--surface-2);font-weight:800;}
+  tr.ours td{background:var(--brand-soft);font-weight:750;}
+  .big{color:var(--brand-ink);font-weight:800;}
+
+  /* ---------- method + download cards ---------- */
+  .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;} @media (max-width:760px){.cards{grid-template-columns:1fr;}}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border-top:4px solid var(--brand);}
+  .card.c2{border-top-color:var(--teal);} .card.c3{border-top-color:var(--myo);} .card.c4{border-top-color:var(--indigo);}
+  .card .k{font-family:"Iowan Old Style",Georgia,serif;font-size:1.7rem;font-weight:800;}
+  .card:nth-child(1) .k{color:var(--brand);} .card.c2 .k{color:var(--teal);} .card.c3 .k{color:var(--myo);} .card.c4 .k{color:var(--indigo);}
+  .card h3{margin:.15em 0 .3em;font-size:1.12rem;} .card p{color:var(--muted);font-size:.96rem;margin:0;}
+  .dls{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;} @media (max-width:760px){.dls{grid-template-columns:repeat(2,1fr);}}
+  .dl{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:var(--shadow);text-align:center;color:var(--ink);}
+  .dl:hover{text-decoration:none;transform:translateY(-2px);border-color:var(--brand);transition:.12s;}
+  .dl svg{width:26px;height:26px;color:var(--brand);margin-bottom:8px;} .dl b{display:block;} .dl span{color:var(--muted);font-size:.84rem;}
+
+  .code{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;}
+  .code pre{margin:0;padding:20px;overflow-x:auto;font-family:ui-monospace,"SF Mono",Consolas,monospace;font-size:.86rem;line-height:1.6;color:var(--ink);}
+  .copy{position:absolute;top:12px;right:12px;padding:6px 13px;border-radius:8px;font-size:.8rem;font-weight:700;border:1px solid var(--border);background:var(--surface-2);color:var(--ink);cursor:pointer;}
+  .copy:hover{border-color:var(--brand);}
+
+  footer{padding:44px 0 64px;color:var(--muted);font-size:.92rem;text-align:center;}
+  .footlinks{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;} .footlinks a{font-weight:700;}
+</style>
+</head>
+<body>
+<button class="toggle" id="themeToggle" aria-label="Toggle light or dark theme">◐</button>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="logo-col left">
+        <div class="logo-chip"><img src="assets/logos/kfupm.png" alt="KFUPM"/></div>
+        <div class="logo-chip"><img src="assets/logos/sdaia_kfupm.jpg" alt="KFUPM-SDAIA Joint Research Centre for AI"/></div>
+        <div class="logo-chip"><img src="assets/logos/brainlab.png" alt="BRAIN Lab"/></div>
+      </div>
+
+      <div class="hero-center">
+        <svg class="ecg" viewBox="0 0 520 52" aria-hidden="true">
+          <defs><linearGradient id="eg" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#1560bd"/><stop offset=".5" stop-color="#0ea5a6"/><stop offset="1" stop-color="#6a5ae0"/>
+          </linearGradient></defs>
+          <path d="M0,26 L140,26 L162,26 L174,7 L190,45 L206,18 L218,26 L292,26 L312,26 L324,10 L340,42 L354,26 L520,26"/>
+        </svg>
+        <span class="badge">IEEE JBHI &middot; 2026</span>
+        <h1 class="title serif">PULSE</h1>
+        <p class="subtitle serif">A Unified Multi-Task Architecture for Cardiac Segmentation, Diagnosis, and Few-Shot Cross-Modality Clinical Adaptation</p>
+        <p class="authors">
+          <b>Hania Ghouse</b><sup>1</sup> &nbsp; <b>Maryam Alsharqi</b><sup>2</sup> &nbsp;
+          <b>Farhad Nezami</b><sup>2,3</sup> &nbsp; <b>Muzammil Behzad</b><sup>1,4,&#42;</sup>
+        </p>
+        <p class="affil">
+          <sup>1</sup>KFUPM, Saudi Arabia &nbsp;&bull;&nbsp; <sup>2</sup>Institute for Medical Engineering and Science, MIT, USA &nbsp;&bull;&nbsp;
+          <sup>3</sup>Harvard Medical School, Harvard University, USA &nbsp;&bull;&nbsp; <sup>4</sup>KFUPM-SDAIA Joint Research Centre for AI<br>
+          <sup>&#42;</sup>Corresponding: muzammil.behzad@kfupm.edu.sa
+        </p>
+        <div class="btns">
+          <a class="btn primary" href="#citation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>Paper</a>
+          <a class="btn" href="https://github.com/BRAIN-Lab-AI/PULSE">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>Code</a>
+          <a class="btn" href="checkpoints/README.md">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>Weights</a>
+        </div>
+        <div class="triad">
+          <span><i class="dot" style="background:var(--rv)"></i>Right ventricle</span>
+          <span><i class="dot" style="background:var(--myo)"></i>Myocardium</span>
+          <span><i class="dot" style="background:var(--lv)"></i>Left ventricle</span>
+        </div>
+      </div>
+
+      <div class="logo-col right">
+        <div class="logo-chip"><img src="assets/logos/mit.png" alt="MIT"/></div>
+        <div class="logo-chip"><img src="assets/logos/harvard.png" alt="Harvard"/></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- STAT BAND -->
+<section style="padding-top:10px;">
+  <div class="wrap">
+    <div class="stats">
+      <div class="stat b"><div class="num">88.8%</div><div class="lab">ACDC mean Dice (5-fold ensemble)</div></div>
+      <div class="stat g"><div class="num">90.0%</div><div class="lab">Cardiomyopathy diagnosis accuracy</div></div>
+      <div class="stat t"><div class="num">85.3%</div><div class="lab">Zero-shot Dice on M&amp;Ms-2 (360)</div></div>
+      <div class="stat i"><div class="num">73.2%</div><div class="lab">Few-shot Dice on CAMUS (N=20)</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABSTRACT -->
+<section id="abstract">
+  <div class="wrap">
+    <div class="panel">
+      <span class="eyebrow b">Abstract</span>
+      <p class="lead">Cardiac image analysis requires accurate ventricular segmentation, disease classification, and structured clinical reporting; these tasks are typically handled by separate models, limiting clinical deployment. To address this, we introduce PULSE, a unified three-task framework that performs: (1) ventricular segmentation using a DINOv2 Vision Transformer (ViT-B/14) backbone with a Dense Prediction Transformer (DPT) decoder and deep supervision; (2) cardiomyopathy diagnosis via a 23-dimensional clinical biomarker vector fed to a Random Forest classifier; and (3) a structured, template-based clinical reporting module that populates a predefined report with the measured indices and rule-based abnormality flags. The framework is entirely vision-based: all reported text is produced by deterministic, rule-driven templates. Additionally, the model takes 2.5D inputs (three adjacent short-axis slices) and is evaluated via a 5-fold stratified ensemble. With extensive experiments on the ACDC benchmark, PULSE achieves a mean Dice of 88.8% (RV: 90.3%, Myo: 84.7%, LV: 91.6%, HD95 &le; 4.6 mm), 90.0% patient-level diagnostic accuracy (macro-AUC 0.982), and 92.7% clinical flag agreement in the generated reports (LVEF MAE 3.09%, within inter-observer tolerance). Without retraining, PULSE achieves 85.3% mean Dice on M&amp;Ms-2 (360 subjects, RV: 87.9%, Myo: 80.4%, LV: 87.5%) and 88.1% LV Dice on Sunnybrook MRI. We further demonstrate that few-shot fine-tuning on CAMUS echocardiography samples yields a mean Dice of 73.2%, showing strong cross-modality transfer from cardiac MRI priors.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ARCHITECTURE -->
+<section id="architecture">
+  <div class="wrap">
+    <span class="eyebrow t">Architecture</span>
+    <h2 class="serif">One examination in, three clinical outputs out</h2>
+    <figure class="fig" style="margin-top:18px">
+      <span class="figlabel">Framework overview</span>
+      <img src="assets/architecture.png" alt="PULSE architecture"/>
+      <figcaption>A DINOv2 ViT-B/14 encoder with a DPT decoder segments the ventricles from a 2.5D input; clinical biomarkers computed from the masks drive the Random Forest diagnosis and the rule-based clinical report.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- FRAMEWORK 3-STEP -->
+<section id="pipeline" style="padding-top:8px;">
+  <div class="wrap">
+    <span class="eyebrow g">Pipeline</span>
+    <h2 class="serif">Segment, diagnose, report</h2>
+    <div class="flow" style="margin-top:20px">
+      <div class="step"><div class="ic" style="background:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h10"/></svg></div><h3>1. Segment</h3><p>DINOv2 + DPT delineate RV, myocardium, and LV from three adjacent short-axis slices.</p></div>
+      <div class="step"><div class="ic" style="background:var(--myo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l2 6 4-14 2 8h6"/></svg></div><h3>2. Diagnose</h3><p>A 23-dimensional biomarker vector feeds a Random Forest for patient-level cardiomyopathy diagnosis.</p></div>
+      <div class="step"><div class="ic" style="background:var(--indigo)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M9 12h7M9 16h7"/></svg></div><h3>3. Report</h3><p>Measured indices and rule-based flags populate a structured clinical report, with no language model.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- HIGHLIGHTS -->
+<section id="highlights">
+  <div class="wrap">
+    <span class="eyebrow i">Highlights</span>
+    <h2 class="serif">What makes PULSE different</h2>
+    <div class="cards" style="margin-top:20px">
+      <div class="card"><div class="k">3 in 1</div><h3>Unified multi-task</h3><p>Segmentation, diagnosis, and reporting from a single model, with no task-specific retraining.</p></div>
+      <div class="card c2"><div class="k">ViT-B/14</div><h3>Foundation backbone</h3><p>Self-supervised DINOv2 features, fine-tuned with a two-stage curriculum and a DPT decoder.</p></div>
+      <div class="card c3"><div class="k">23-D</div><h3>Interpretable diagnosis</h3><p>Every classifier input is a named clinical measurement: EF, volumes, mass, wall thickness.</p></div>
+      <div class="card c4"><div class="k">5-shot</div><h3>Cross-modality transfer</h3><p>Adapts from MRI to echocardiography with only a handful of labels.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="wrap">
+    <span class="eyebrow g">Results</span>
+    <h2 class="serif">Accurate, generalizable, and transferable</h2>
+
+    <div class="tbl-scroll" style="margin-top:20px">
+      <table>
+        <caption>ACDC segmentation, 5-fold ensemble with test-time augmentation (50 test patients)</caption>
+        <thead><tr><th>Structure</th><th>Dice (%)</th><th>IoU (%)</th><th>HD95 (mm)</th><th>ASSD (mm)</th></tr></thead>
+        <tbody>
+          <tr><td>Left ventricle (LV)</td><td>91.6</td><td>84.5</td><td>3.87</td><td>0.95</td></tr>
+          <tr><td>Myocardium (Myo)</td><td>84.7</td><td>73.5</td><td>3.72</td><td>0.87</td></tr>
+          <tr><td>Right ventricle (RV)</td><td>90.3</td><td>82.3</td><td>4.57</td><td>1.05</td></tr>
+          <tr class="total"><td>Mean</td><td class="big">88.8</td><td>80.1</td><td>4.05</td><td>0.96</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tbl-scroll" style="margin-top:18px">
+      <table>
+        <caption>Comparison with published methods on ACDC (Dice %)</caption>
+        <thead><tr><th>Method</th><th>RV</th><th>Myo</th><th>LV</th><th>Mean</th><th>Diagnosis</th></tr></thead>
+        <tbody>
+          <tr><td>U-Net</td><td>82.3</td><td>78.7</td><td>94.9</td><td>85.3</td><td>No</td></tr>
+          <tr><td>nnU-Net</td><td>90.1</td><td>88.4</td><td>95.7</td><td>91.4</td><td>No</td></tr>
+          <tr><td>TransUNet</td><td>84.5</td><td>77.7</td><td>94.1</td><td>85.4</td><td>No</td></tr>
+          <tr><td>SwinUNet</td><td>90.7</td><td>79.1</td><td>93.9</td><td>87.9</td><td>No</td></tr>
+          <tr class="ours"><td>PULSE (ours)</td><td>90.3</td><td>84.7</td><td>91.6</td><td>88.8</td><td>90.0%</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2" style="margin-top:18px">
+      <div class="tbl-scroll">
+        <table>
+          <caption>Zero-shot generalization (no retraining)</caption>
+          <thead><tr><th>Dataset</th><th>Subjects</th><th>Mean Dice</th></tr></thead>
+          <tbody>
+            <tr><td>M&amp;Ms-2 (4 vendors)</td><td>360</td><td class="big">85.3</td></tr>
+            <tr class="total"><td>Sunnybrook (LV)</td><td>45</td><td>88.1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl-scroll">
+        <table>
+          <caption>Few-shot CAMUS echocardiography (2-class)</caption>
+          <thead><tr><th>Labelled N</th><th>Myo</th><th>LV</th><th>Mean</th></tr></thead>
+          <tbody>
+            <tr><td>5</td><td>65.2</td><td>72.1</td><td class="big">68.7</td></tr>
+            <tr><td>10</td><td>67.8</td><td>73.3</td><td>70.6</td></tr>
+            <tr class="total"><td>20</td><td>70.8</td><td>75.6</td><td class="big">73.2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="grid2" style="margin-top:26px">
+      <figure class="fig"><span class="figlabel">Segmentation</span><img src="assets/per_disease_dice.png" alt="Per-disease Dice"/><figcaption>Per-disease Dice across the five ACDC classes.</figcaption></figure>
+      <figure class="fig"><span class="figlabel">Diagnosis</span><img src="assets/confusion_matrix.png" alt="Confusion matrix"/><figcaption>Diagnosis confusion matrix on the ACDC test set.</figcaption></figure>
+    </div>
+    <figure class="fig" style="margin-top:20px"><span class="figlabel">Diagnosis</span><img src="assets/diagnosis_performance.png" alt="Diagnosis performance"/><figcaption>Per-class accuracy, precision, recall, and F1 for cardiomyopathy classification.</figcaption></figure>
+    <figure class="fig" style="margin-top:20px"><span class="figlabel">Interpretability</span><img src="assets/attention_maps.png" alt="DINOv2 attention maps"/><figcaption>DINOv2 self-attention concentrates on the cardiac region across all disease classes.</figcaption></figure>
+  </div>
+</section>
+
+<!-- QUALITATIVE -->
+<section id="qualitative">
+  <div class="wrap">
+    <span class="eyebrow r">Qualitative</span>
+    <h2 class="serif">Segmentation across vendors and modalities</h2>
+    <figure class="fig" style="margin-top:18px"><span class="figlabel">Zero-shot MRI</span><img src="assets/mnms_generalization.png" alt="M&Ms-2 generalization"/><figcaption>Zero-shot generalization to multi-vendor M&amp;Ms-2 cine MRI: LV (red), Myocardium (green), RV (blue).</figcaption></figure>
+    <figure class="fig" style="margin-top:20px"><span class="figlabel">Few-shot ultrasound</span><img src="assets/camus_qualitative.png" alt="CAMUS few-shot"/><figcaption>Few-shot adaptation to CAMUS echocardiography from a handful of labelled scans.</figcaption></figure>
+  </div>
+</section>
+
+<!-- DOWNLOADS -->
+<section id="downloads">
+  <div class="wrap">
+    <span class="eyebrow b">Get started</span>
+    <h2 class="serif">Code, weights, and data</h2>
+    <div class="dls" style="margin-top:20px">
+      <a class="dl" href="https://github.com/BRAIN-Lab-AI/PULSE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg><b>Code</b><span>GitHub repository</span></a>
+      <a class="dl" href="checkpoints/README.md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><b>Weights</b><span>5-fold checkpoints</span></a>
+      <a class="dl" href="docs/DATASETS.md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/></svg><b>Datasets</b><span>ACDC, M&amp;Ms-2, CAMUS</span></a>
+      <a class="dl" href="docs/INSTALL.md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><b>Docs</b><span>Install and usage</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- CITATION -->
+<section id="citation">
+  <div class="wrap">
+    <span class="eyebrow i">Citation</span>
+    <h2 class="serif">Cite PULSE</h2>
+    <div class="code" style="margin-top:18px">
+      <button class="copy" id="copyBtn">Copy</button>
+      <pre id="bib">@article{ghouse2026pulse,
+  title   = {PULSE: A Unified Multi-Task Architecture for Cardiac
+             Segmentation, Diagnosis, and Few-Shot Cross-Modality
+             Clinical Adaptation},
+  author  = {Ghouse, Hania and Alsharqi, Maryam and
+             Nezami, Farhad and Behzad, Muzammil},
+  journal = {IEEE Journal of Biomedical and Health Informatics (JBHI)},
+  year    = {2026}
+}</pre>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footlinks">
+      <a href="https://github.com/BRAIN-Lab-AI/PULSE">GitHub</a>
+      <a href="checkpoints/README.md">Weights</a>
+      <a href="docs/INSTALL.md">Documentation</a>
+      <a href="mailto:muzammil.behzad@kfupm.edu.sa">Contact</a>
+    </div>
+    <p>Datasets: ACDC, M&amp;Ms-2, Sunnybrook, CAMUS. Backbone: DINOv2 (Meta AI).<br>
+    Built at the BRAIN Lab, KFUPM, with the KFUPM-SDAIA Joint Research Centre for AI. MIT License.</p>
+  </div>
+</footer>
+
+<script>
+  const root=document.documentElement, tg=document.getElementById('themeToggle');
+  tg.addEventListener('click',()=>{const c=root.getAttribute('data-theme');
+    root.setAttribute('data-theme', c==='dark'?'light':(c==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark')));});
+  const cb=document.getElementById('copyBtn');
+  cb.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(document.getElementById('bib').innerText);
+    cb.textContent='Copied';setTimeout(()=>cb.textContent='Copy',1600);}catch(e){cb.textContent='Select and copy';}});
+</script>
+</body>
+</html>

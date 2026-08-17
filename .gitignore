@@ -1,0 +1,33 @@
+# Weights / checkpoints (host on Releases / Hugging Face / Drive, not in git)
+*.pth
+*.pt
+*.ckpt
+checkpoints/**/*.pth
+folds*/**/*.pth
+
+# Data (download separately — see docs/DATASETS.md)
+data/
+*.nii
+*.nii.gz
+*.dcm
+*.mat
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Outputs
+reports/
+outputs/
+*.json.tmp
+*.log
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/

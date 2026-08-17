@@ -1,0 +1,17 @@
+# PULSE — Cardiac MRI Segmentation, Diagnosis & Reporting
+# Tested with Python 3.10 + CUDA 12.1 (also runs CPU-only for inference).
+# Install:  pip install -r requirements.txt
+
+torch>=2.1.0
+torchvision>=0.16.0
+transformers>=4.38.0          # DINOv2 ViT-B/14 backbone (facebook/dinov2-base)
+numpy>=1.24.0
+nibabel>=5.0.0                # NIfTI I/O
+opencv-python>=4.8.0          # slice resizing
+scipy>=1.10.0                 # surface distances (HD95/ASSD)
+scikit-learn>=1.3.0           # Random Forest diagnosis
+albumentations>=1.3.0         # training augmentation
+pydicom>=2.4.0                # Sunnybrook / DICOM datasets
+matplotlib>=3.7.0             # figures
+tqdm>=4.65.0
+huggingface_hub>=0.20.0       # optional: pull weights from the Hub

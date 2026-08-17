@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use PULSE, please cite the following paper."
+title: "PULSE: A Unified Multi-Task Architecture for Cardiac Segmentation, Diagnosis, and Few-Shot Cross-Modality Clinical Adaptation"
+authors:
+  - family-names: Ghouse
+    given-names: Hania
+  - family-names: Alsharqi
+    given-names: Maryam
+  - family-names: Nezami
+    given-names: Farhad
+  - family-names: Behzad
+    given-names: Muzammil
+year: 2026
+journal: "IEEE Journal of Biomedical and Health Informatics (JBHI)"
