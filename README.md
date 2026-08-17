@@ -17,6 +17,7 @@
   <a href="#citation">Paper</a> &nbsp;|&nbsp;
   <a href="https://brain-lab-ai.github.io/PULSE/">Project Page</a> &nbsp;|&nbsp;
   <a href="checkpoints/README.md">Pretrained Weights</a> &nbsp;|&nbsp;
+  <a href="https://huggingface.co/hg-0403/PULSE">Hugging Face</a> &nbsp;|&nbsp;
   <a href="#get-started">Get Started</a> &nbsp;|&nbsp;
   <a href="#qualitative-results">Results</a>
 </p>
@@ -25,6 +26,7 @@
   <a href="https://github.com/BRAIN-Lab-AI/PULSE"><img src="https://img.shields.io/badge/Code-GitHub-181717?logo=github&logoColor=white"/></a>
   <a href="https://brain-lab-ai.github.io/PULSE/"><img src="https://img.shields.io/badge/Project-Page-1560bd?logo=githubpages&logoColor=white"/></a>
   <a href="https://github.com/BRAIN-Lab-AI/PULSE/releases/tag/v1.0"><img src="https://img.shields.io/badge/Weights-v1.0-0ea5a6?logo=pytorch&logoColor=white"/></a>
+  <a href="https://huggingface.co/hg-0403/PULSE"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-ffcc4d"/></a>
   <a href="#citation"><img src="https://img.shields.io/badge/Paper-IEEE%20JBHI%202026-6a5ae0"/></a>
   <img src="https://img.shields.io/badge/python-3.10-3776ab?logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/License-MIT-16a34a"/>
@@ -98,6 +100,13 @@ The released model is a 5-fold ensemble. Download the checkpoints with the helpe
 bash checkpoints/download_weights.sh
 ```
 
+The same weights are mirrored on the [Hugging Face Hub](https://huggingface.co/hg-0403/PULSE):
+
+```python
+from huggingface_hub import hf_hub_download
+ckpt = hf_hub_download("hg-0403/PULSE", "folds_vdino/fold_0/best_model.pth")
+```
+
 | Model | Backbone | Training data | Files | Size |
 |:---|:---|:---|:---|:---|
 | PULSE (5-fold) | DINOv2 ViT-B/14 | ACDC | `folds_vdino/fold_{0..4}/best_model.pth` | ~1.8 GB |
@@ -125,7 +134,10 @@ python pulse/infer.py \
 The output is a label map with the same shape as the input, where `0 = background, 1 = RV, 2 = Myocardium, 3 = LV`. Use `--device cpu` to force CPU, or `--weights checkpoints/folds_vdino/fold_0/best_model.pth` for a single fold.
 
 ### 3. Run the full pipeline on ACDC (segmentation, diagnosis, report)
+This step needs the ACDC dataset. Download it (see [Datasets](#datasets)) and point `ACDC_ROOT` at your copy (the folder that contains `training/` and `testing/`):
 ```bash
+export ACDC_ROOT=/path/to/ACDC/database   # <-- change this to your ACDC location
+
 # a) Segmentation metrics + per-patient biomarkers
 python pulse/ensemble_eval.py --folds_dir checkpoints/folds_vdino --out features.json --data_root $ACDC_ROOT
 # b) Cardiomyopathy diagnosis (Random Forest, 10-seed ensemble)
@@ -176,10 +188,25 @@ Each fold writes `best_model.pth` and `history.json` to its `--ckpt_dir`. The de
 
 ## Evaluation
 
+> **Change the dataset paths.** In every command below, replace the `/path/to/...` value with the folder where you downloaded that dataset (see [Datasets](#datasets)). `--folds_dir` / `--ckpt_dir` already point to the weights you downloaded in [Get Started](#get-started), so leave those as they are.
+
 ```bash
-python pulse/eval_mnm.py           --folds_dir checkpoints/folds_vdino   # M&Ms-2, zero-shot
-python pulse/eval_sunnybrook.py    --folds_dir checkpoints/folds_vdino   # Sunnybrook, zero-shot LV
-python pulse/eval_camus_fewshot.py --folds_dir checkpoints/folds_vdino   # CAMUS, few-shot
+# M&Ms-2 (zero-shot MRI). Set --mnm_root to your M&Ms-2 dataset folder.
+python pulse/eval_mnm.py \
+    --folds_dir checkpoints/folds_vdino \
+    --mnm_root /path/to/MnM-2/dataset
+
+# Sunnybrook (zero-shot LV). Set --sb_root to your Sunnybrook folder.
+python pulse/eval_sunnybrook.py \
+    --folds_dir checkpoints/folds_vdino \
+    --sb_root /path/to/SunnybrookData
+
+# CAMUS (few-shot echocardiography). Note: this script takes --ckpt_dir
+# (the folder that contains fold_0/best_model.pth), not --folds_dir.
+python pulse/eval_camus_fewshot.py \
+    --ckpt_dir checkpoints/folds_vdino \
+    --camus_root /path/to/CAMUS/database_nifti \
+    --view 2CH
 ```
 Additional utilities: `eval_perdisease.py`, `eval_ensemble_scaling.py`, and `bootstrap_ci.py`. See [docs/INFERENCE.md](docs/INFERENCE.md).
 
@@ -218,10 +245,9 @@ Diagnosis: 90.0% accuracy, macro-F1 0.900, macro-AUC 0.982. Zero-shot: M&Ms-2 (3
 ## Qualitative Results
 
 ### Segmentation on ACDC
-End-diastole and end-systole predictions across cardiomyopathy classes. LV (red), Myocardium (green), RV (blue).
+End-diastole (ED) and end-systole (ES) predictions across the five ACDC cardiomyopathy classes (DCM, HCM, MINF, NOR, RVA). RV (red), Myocardium (green), LV (blue).
 <p align="center">
-  <img src="assets/seg_dcm_ed.png" width="100%"/><br>
-  <img src="assets/seg_hcm_es.png" width="100%"/>
+  <img src="assets/acdc_segmentation.png" width="100%"/>
 </p>
 
 ### Diagnosis and per-disease analysis
