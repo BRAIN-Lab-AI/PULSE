@@ -3,15 +3,10 @@
 </p>
 
 <p align="center">
-  <img src="assets/logos/kfupm.png" height="34"/> &nbsp;&nbsp;
-  <img src="assets/logos/sdaia_kfupm.jpg" height="34"/> &nbsp;&nbsp;
-  <img src="assets/logos/brainlab.png" height="32"/> &nbsp;&nbsp;
-  <img src="assets/logos/mit.png" height="32"/> &nbsp;&nbsp;
-  <img src="assets/logos/harvard.png" height="30"/>
-</p>
-
-<p align="center">
-  <b>Hania Ghouse</b><sup>1</sup> &nbsp; <b>Maryam Alsharqi</b><sup>2</sup> &nbsp; <b>Farhad Nezami</b><sup>2,3</sup> &nbsp; <b>Muzammil Behzad</b><sup>1,4</sup>
+  <b><a href="https://scholar.google.com/citations?user=iVWuM4wAAAAJ&amp;hl=en">Hania Ghouse</a></b><sup>1</sup> &nbsp;
+  <b><a href="https://scholar.google.com/citations?user=ai_buWkAAAAJ&amp;hl=en">Maryam Alsharqi</a></b><sup>2</sup> &nbsp;
+  <b><a href="https://scholar.google.com/citations?user=n-1I8IIAAAAJ&amp;hl=en">Farhad Nezami</a></b><sup>2,3</sup> &nbsp;
+  <b><a href="https://muzammilbehzad.com/">Muzammil Behzad</a></b><sup>1,4</sup>
 </p>
 
 <p align="center">
@@ -34,6 +29,7 @@
   <img src="https://img.shields.io/badge/python-3.10-3776ab?logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/License-MIT-16a34a"/>
   <img src="https://img.shields.io/github/stars/BRAIN-Lab-AI/PULSE?style=social"/>
+  <a href="https://sa.linkedin.com/in/hania-ghouse"><img src="https://img.shields.io/badge/LinkedIn-Hania%20Ghouse-0a66c2?logo=linkedin&logoColor=white"/></a>
 </p>
 
 <p align="center">
@@ -296,5 +292,5 @@ We thank the organizers of the ACDC, M&Ms-2, Sunnybrook, and CAMUS challenges fo
 
 For questions, please open a [GitHub issue](https://github.com/BRAIN-Lab-AI/PULSE/issues) or reach out to:
 
-- **Hania Ghouse**: haniaghouse704@gmail.com
-- **Muzammil Behzad**: muzammil.behzad@kfupm.edu.sa
+- **Hania Ghouse**: haniaghouse704@gmail.com ([Google Scholar](https://scholar.google.com/citations?user=iVWuM4wAAAAJ&hl=en), [LinkedIn](https://sa.linkedin.com/in/hania-ghouse))
+- **Muzammil Behzad**: muzammil.behzad@kfupm.edu.sa ([Website](https://muzammilbehzad.com/))
