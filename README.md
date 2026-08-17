@@ -154,6 +154,14 @@ ckpt = torch.load("checkpoints/folds_vdino/fold_0/best_model.pth", map_location=
 model.load_state_dict(ckpt["model"]); model.eval()
 ```
 
+### 5. Interactive demo (optional)
+Launch a local browser demo that lets you drop in a NIfTI scan and see the segmentation. It pulls the weights automatically from the [Hugging Face Hub](https://huggingface.co/hg-0403/PULSE):
+```bash
+pip install -r demo/requirements.txt
+python demo/app.py
+# open the printed local URL (default http://127.0.0.1:7860)
+```
+
 ---
 
 ## Training
