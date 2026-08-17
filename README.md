@@ -33,7 +33,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/architecture.png" width="98%" alt="PULSE architecture"/>
+  <img src="assets/architecture.png" width="100%" alt="PULSE architecture"/>
 </p>
 <p align="center"><sub>PULSE reads one short-axis cardiac MRI study and returns segmentation, cardiomyopathy diagnosis, and a structured clinical report in a single pass.</sub></p>
 
@@ -220,28 +220,26 @@ Diagnosis: 90.0% accuracy, macro-F1 0.900, macro-AUC 0.982. Zero-shot: M&Ms-2 (3
 ### Segmentation on ACDC
 End-diastole and end-systole predictions across cardiomyopathy classes. LV (red), Myocardium (green), RV (blue).
 <p align="center">
-  <img src="assets/seg_dcm_ed.png" width="88%"/><br>
-  <img src="assets/seg_hcm_es.png" width="88%"/>
+  <img src="assets/seg_dcm_ed.png" width="100%"/><br>
+  <img src="assets/seg_hcm_es.png" width="100%"/>
 </p>
 
 ### Diagnosis and per-disease analysis
-<p align="center">
-  <img src="assets/per_disease_dice.png" width="47%"/>
-  <img src="assets/confusion_matrix.png" width="40%"/><br>
-  <img src="assets/diagnosis_performance.png" width="90%"/>
-</p>
+<p align="center"><img src="assets/per_disease_dice.png" width="82%"/></p>
+<p align="center"><img src="assets/confusion_matrix.png" width="54%"/></p>
+<p align="center"><img src="assets/diagnosis_performance.png" width="100%"/></p>
 
 ### Zero-shot generalization to multi-vendor MRI (M&Ms-2)
-<p align="center"><img src="assets/mnms_generalization.png" width="92%"/></p>
+<p align="center"><img src="assets/mnms_generalization.png" width="100%"/></p>
 
 ### Zero-shot transfer to Sunnybrook
-<p align="center"><img src="assets/sunnybrook.png" width="92%"/></p>
+<p align="center"><img src="assets/sunnybrook.png" width="100%"/></p>
 
 ### Few-shot cross-modality adaptation to echocardiography (CAMUS)
-<p align="center"><img src="assets/camus_qualitative.png" width="92%"/></p>
+<p align="center"><img src="assets/camus_qualitative.png" width="100%"/></p>
 
 ### Model interpretability (DINOv2 attention)
-<p align="center"><img src="assets/attention_maps.png" width="92%"/></p>
+<p align="center"><img src="assets/attention_maps.png" width="100%"/></p>
 <p align="center"><sub>Self-attention concentrates on the cardiac region across all disease classes, without any attention supervision.</sub></p>
 
 ---
