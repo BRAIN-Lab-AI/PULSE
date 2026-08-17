@@ -26,7 +26,7 @@ IMG_SIZE = 256
 BASE     = Path(__file__).parent
 FOLDS    = BASE / "folds_vdino"
 OUT      = BASE / "paper_contents"
-DATA     = Path("/SLURM/home/slurm_g202518690/student251/ACDC/database/testing")
+DATA     = Path("data/ACDC/database/testing")
 
 # Colors: RV=blue, Myo=green, LV=red  (RGB, 0-1)
 COLORS = {1: (0.30, 0.55, 1.00),   # RV  — steel blue

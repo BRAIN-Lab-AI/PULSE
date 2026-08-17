@@ -343,6 +343,6 @@ for i, (col, lbl) in enumerate(legend_items):
 
 
 plt.tight_layout(pad=0.4)
-out = "/SLURM/home/slurm_g202518690/student251/CVPR/paper_contents/DL.png"
+out = "architecture_generated.png"
 plt.savefig(out, dpi=220, bbox_inches="tight", facecolor="white")
 print(f"Saved: {out}")

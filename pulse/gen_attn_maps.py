@@ -36,7 +36,7 @@ IMG_SIZE = 256
 BASE     = Path(__file__).parent
 CKPT     = BASE / "folds_vdino" / "fold_0" / "best_model.pth"
 OUT      = BASE / "paper_contents" / "fig_attention_maps.png"
-DATA     = Path("/SLURM/home/slurm_g202518690/student251/ACDC/database/testing")
+DATA     = Path("data/ACDC/database/testing")
 
 CLASS_PATIENTS = {
     "DCM":  "patient101",

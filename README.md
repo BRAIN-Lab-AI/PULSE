@@ -250,6 +250,15 @@ Diagnosis: 90.0% accuracy, macro-F1 0.900, macro-AUC 0.982. Zero-shot: M&Ms-2 (3
 
 ---
 
+## Reproducibility
+
+- **The evaluation numbers reproduce from the released weights.** The inference pipeline is deterministic: fixed 4-way flip test-time augmentation, argmax decoding, and largest-connected-component post-processing. Running the [Evaluation](#evaluation) commands on the downloaded 5-fold checkpoints reproduces the segmentation table above (mean Dice 88.8%). On CPU the results are bit-for-bit reproducible; on GPU they may differ only in the last reported digit because of cuDNN nondeterminism.
+- **Diagnosis is fully deterministic.** The Random Forest is trained over fixed seeds (`--seeds 10`, i.e. `random_state = 0..9`) on biomarkers extracted from the predicted masks, reproducing 90.0% accuracy and macro-AUC 0.982.
+- **Training from scratch uses fixed seeds** for the stratified 5-fold split and initialisation (`--seed 42`). Retrained models match the paper within normal hardware variance (typically under 0.3% mean Dice); exact bit-level reproduction across different GPUs, drivers, or cuDNN versions is not guaranteed, as is standard for deep learning.
+- **Environment.** Package versions are pinned in [requirements.txt](requirements.txt) and [environment.yml](environment.yml). The DINOv2 ViT-B/14 backbone is loaded from `facebook/dinov2-base` on the Hugging Face Hub.
+
+---
+
 ## Qualitative Results
 
 ### Segmentation on ACDC

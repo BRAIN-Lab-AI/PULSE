@@ -15,15 +15,23 @@ from eval_vdino_final import load_model, predict_ensemble, dice3d
 import diagnosis_features as _df
 
 DEVICE   = __import__("torch").device("cuda" if __import__("torch").cuda.is_available() else "cpu")
-BASE     = Path(__file__).parent
-FOLDS    = BASE / "folds_vdino"
-DATA     = Path("/SLURM/home/slurm_g202518690/student251/ACDC/database")
-_df.TEST_ROOT = DATA / "testing"
-
+import argparse, os
 import nibabel as nib
 
+
 def main():
-    fold_ckpts = sorted(FOLDS.glob("fold_*/best_model.pth"), key=lambda p: p.parent.name)
+    ap = argparse.ArgumentParser(description="Per-disease per-class Dice (5-fold ensemble + TTA).")
+    ap.add_argument("--folds_dir", default=os.environ.get("FOLDS_DIR", "checkpoints/folds_vdino"),
+                    help="Folder with fold_*/best_model.pth (default: checkpoints/folds_vdino).")
+    ap.add_argument("--data_root", default=os.environ.get("ACDC_ROOT"),
+                    help="ACDC database root containing testing/. Or export ACDC_ROOT.")
+    args = ap.parse_args()
+    if not args.data_root:
+        ap.error("Set --data_root /path/to/ACDC/database (or export ACDC_ROOT=/path/to/ACDC/database).")
+    _df.TEST_ROOT = Path(args.data_root) / "testing"
+    fold_ckpts = sorted(Path(args.folds_dir).glob("fold_*/best_model.pth"), key=lambda p: p.parent.name)
+    if not fold_ckpts:
+        ap.error(f"No checkpoints in {args.folds_dir}. Run: bash checkpoints/download_weights.sh")
     models = [load_model(ck, freeze_blk=2) for ck in fold_ckpts]
     patients = _df.list_patients(_df.TEST_ROOT)
 

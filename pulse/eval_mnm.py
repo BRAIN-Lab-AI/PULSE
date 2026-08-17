@@ -31,7 +31,7 @@ from postprocess import postprocess
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 IMG_SIZE = 256
 MNM_ROOT = Path(os.environ.get(
-    "MNM_ROOT", "/SLURM/home/slurm_g202518690/student251/MnMs_Extracted/MnM2/dataset"
+    "MNM_ROOT", "data/MnM-2/dataset"
 ))
 
 

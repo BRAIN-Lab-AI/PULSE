@@ -30,7 +30,7 @@ IMG_SIZE = 256
 
 SB_ROOT = Path(os.environ.get(
     "SB_ROOT",
-    "/SLURM/home/slurm_g202518690/student251/SUNNYBROOK_EXTRACTED/Cardiac MRI"
+    "data/Sunnybrook/Cardiac MRI"
 ))
 
 

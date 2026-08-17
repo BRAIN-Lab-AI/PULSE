@@ -41,7 +41,7 @@ SEEDS = [0, 1, 2, 3, 4]
 N_SHOTS = [5, 10, 20]
 
 CAMUS_ROOT = Path(os.environ.get(
-    "CAMUS_ROOT", "/SLURM/home/slurm_g202518690/student251/CAMUS/database_nifti"
+    "CAMUS_ROOT", "data/CAMUS/database_nifti"
 ))
 
 

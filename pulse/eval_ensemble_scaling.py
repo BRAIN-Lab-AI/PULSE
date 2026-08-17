@@ -7,7 +7,7 @@ Uses IDENTICAL evaluation methodology to eval_vdino_final.py:
   - dice3d: 3D Dice over full volume
   - patient-level averaging (mean over phases, then over patients)
 """
-import sys
+import argparse, os, sys
 from pathlib import Path
 import torch, numpy as np, nibabel as nib
 sys.path.insert(0, str(Path(__file__).parent))
@@ -19,11 +19,6 @@ from eval_vdino_final import load_model, predict_ensemble, dice3d
 import diagnosis_features as _df
 
 DEVICE    = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-BASE      = Path(__file__).parent
-FOLDS_DIR = BASE / "folds_vdino"
-DATA_ROOT = Path("/SLURM/home/slurm_g202518690/student251/ACDC/database")
-
-_df.TEST_ROOT = DATA_ROOT / "testing"
 
 
 def evaluate_tta(models, patients, use_tta):
@@ -46,9 +41,20 @@ def evaluate_tta(models, patients, use_tta):
 
 
 def main():
+    ap = argparse.ArgumentParser(description="Ensemble-size and TTA scaling on ACDC.")
+    ap.add_argument("--folds_dir", default=os.environ.get("FOLDS_DIR", "checkpoints/folds_vdino"),
+                    help="Folder with fold_*/best_model.pth (default: checkpoints/folds_vdino).")
+    ap.add_argument("--data_root", default=os.environ.get("ACDC_ROOT"),
+                    help="ACDC database root containing testing/. Or export ACDC_ROOT.")
+    args = ap.parse_args()
+    if not args.data_root:
+        ap.error("Set --data_root /path/to/ACDC/database (or export ACDC_ROOT=/path/to/ACDC/database).")
+    _df.TEST_ROOT = Path(args.data_root) / "testing"
     patients  = _df.list_patients(_df.TEST_ROOT)
-    fold_ckpts = sorted(FOLDS_DIR.glob("fold_*/best_model.pth"),
+    fold_ckpts = sorted(Path(args.folds_dir).glob("fold_*/best_model.pth"),
                         key=lambda p: p.parent.name)
+    if not fold_ckpts:
+        ap.error(f"No checkpoints in {args.folds_dir}. Run: bash checkpoints/download_weights.sh")
 
     all_models = []
     for ck in fold_ckpts:

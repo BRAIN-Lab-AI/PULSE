@@ -295,6 +295,6 @@ ax.text(W/2, H-0.22,
         color=DARK, zorder=5)
 
 plt.tight_layout(pad=0.1)
-out = "/SLURM/home/slurm_g202518690/student251/CVPR/paper_contents/clinical_pipeline_fig.png"
+out = "clinical_pipeline_fig.png"
 plt.savefig(out, dpi=220, bbox_inches="tight", facecolor=BG)
 print(f"Saved: {out}")

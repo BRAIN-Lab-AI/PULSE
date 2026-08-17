@@ -40,6 +40,6 @@ ax.legend(fontsize=9, loc="lower right")
 ax.grid(True, alpha=0.3)
 
 plt.tight_layout()
-out = "/SLURM/home/slurm_g202518690/student251/CVPR/paper_contents/fewshotzonecurve.png"
+out = "fewshotzonecurve.png"
 plt.savefig(out, dpi=200, bbox_inches="tight")
 print(f"Saved: {out}")
