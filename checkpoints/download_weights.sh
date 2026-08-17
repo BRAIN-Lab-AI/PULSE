@@ -1,25 +1,13 @@
 #!/usr/bin/env bash
-# Download PULSE fold checkpoints. Replace the URLs below with your release links.
+# Download the PULSE pretrained 5-fold checkpoints from the GitHub Release
+# and place them at checkpoints/folds_vdino/fold_{0..4}/best_model.pth
 set -e
 cd "$(dirname "$0")"
+BASE="https://github.com/BRAIN-Lab-AI/PULSE/releases/download/v1.0"
 
-# --- EDIT THESE (GitHub Release / HF / Drive direct-download links) ----------
-declare -A URLS=(
-  ["folds_vdino/fold_0/best_model.pth"]="https://REPLACE_ME/fold_0.pth"
-  ["folds_vdino/fold_1/best_model.pth"]="https://REPLACE_ME/fold_1.pth"
-  ["folds_vdino/fold_2/best_model.pth"]="https://REPLACE_ME/fold_2.pth"
-  ["folds_vdino/fold_3/best_model.pth"]="https://REPLACE_ME/fold_3.pth"
-  ["folds_vdino/fold_4/best_model.pth"]="https://REPLACE_ME/fold_4.pth"
-)
-# ----------------------------------------------------------------------------
-
-for dest in "${!URLS[@]}"; do
-  url="${URLS[$dest]}"
-  if [[ "$url" == *REPLACE_ME* ]]; then
-    echo "!! Edit download_weights.sh and set the real URL for $dest"; continue
-  fi
-  mkdir -p "$(dirname "$dest")"
-  echo "Downloading $dest ..."
-  curl -L -o "$dest" "$url"
+for i in 0 1 2 3 4; do
+  mkdir -p "folds_vdino/fold_$i"
+  echo "Downloading fold_$i ..."
+  curl -L -o "folds_vdino/fold_$i/best_model.pth" "$BASE/fold_$i.pth"
 done
 echo "Done. Verify: ls checkpoints/folds_vdino/fold_0/best_model.pth"
