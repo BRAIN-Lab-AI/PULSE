@@ -89,6 +89,8 @@
   .subtitle{font-size:clamp(1.02rem,2.4vw,1.32rem);font-weight:550;max-width:760px;margin:.2em auto 0;text-wrap:balance;}
   .authors{color:var(--muted);margin:20px auto 2px;max-width:720px;font-size:1.02rem;}
   .authors b{color:var(--ink);font-weight:650;} .authors sup{color:var(--brand);font-weight:700;}
+  .authors a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px;text-decoration-color:var(--faint);}
+  .authors a:hover{color:var(--brand);text-decoration-color:var(--brand);}
   .affil{color:var(--faint);font-size:.88rem;max-width:760px;margin:.35em auto 0;line-height:1.55;}
   .btns{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:26px;}
   .btn{display:inline-flex;align-items:center;gap:9px;padding:12px 22px;border-radius:999px;font-weight:650;font-size:.95rem;
@@ -173,7 +175,7 @@
     <div class="hero-grid">
       <div class="logo-col left">
         <div class="logo-chip"><img src="assets/logos/kfupm.png" alt="KFUPM"/></div>
-        <div class="logo-chip"><img src="assets/logos/sdaia_kfupm.jpg" alt="KFUPM-SDAIA Joint Research Centre for AI"/></div>
+        <div class="logo-chip"><img src="assets/logos/sdaia_kfupm.jpg" alt="SDAIA-KFUPM Joint Research Center for Artificial Intelligence"/></div>
         <div class="logo-chip"><img src="assets/logos/brainlab.png" alt="BRAIN Lab"/></div>
       </div>
 
@@ -188,17 +190,19 @@
         <h1 class="title serif">PULSE</h1>
         <p class="subtitle serif">A Unified Multi-Task Architecture for Cardiac Segmentation, Diagnosis, and Few-Shot Cross-Modality Clinical Adaptation</p>
         <p class="authors">
-          <b>Hania Ghouse</b><sup>1</sup> &nbsp; <b>Maryam Alsharqi</b><sup>2</sup> &nbsp;
-          <b>Farhad Nezami</b><sup>2,3</sup> &nbsp; <b><a href="https://muzammilbehzad.com/" target="_blank" rel="noopener noreferrer">Muzammil Behzad</a></b><sup>1,4,&#42;</sup>
+          <b><a href="https://scholar.google.com/citations?user=iVWuM4wAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Hania Ghouse</a></b><sup>1</sup> &nbsp; <b><a href="https://scholar.google.com/citations?user=ai_buWkAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Maryam Alsharqi</a></b><sup>2</sup> &nbsp;
+          <b><a href="https://scholar.google.com/citations?user=n-1I8IIAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Farhad Nezami</a></b><sup>2,3</sup> &nbsp; <b><a href="https://muzammilbehzad.com/" target="_blank" rel="noopener noreferrer">Muzammil Behzad</a></b><sup>1,4,&#42;</sup>
         </p>
         <p class="affil">
-          <sup>1</sup>KFUPM, Saudi Arabia &nbsp;&bull;&nbsp; <sup>2</sup>Massachusetts Institute of Technology (MIT), USA &nbsp;&bull;&nbsp;
-          <sup>3</sup>Harvard Medical School, Harvard University, USA &nbsp;&bull;&nbsp; <sup>4</sup>SDAIA-KFUPM Joint Research Centre for AI<br>
+          <sup>1</sup>King Fahd University of Petroleum and Minerals (KFUPM), Saudi Arabia &nbsp;&bull;&nbsp; <sup>2</sup>Massachusetts Institute of Technology (MIT), USA &nbsp;&bull;&nbsp;
+          <sup>3</sup>Harvard Medical School, Harvard University, USA &nbsp;&bull;&nbsp; <sup>4</sup>SDAIA-KFUPM Joint Research Center for Artificial Intelligence<br>
           <sup>&#42;</sup>Corresponding: muzammil.behzad@kfupm.edu.sa
         </p>
         <div class="btns">
-          <a class="btn primary" href="#citation">
+          <a class="btn primary" href="https://doi.org/10.48550/arXiv.2512.03848" target="_blank" rel="noopener noreferrer">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2h9l5 5v15H6z"/><path d="M14 2v6h6"/></svg>Paper</a>
+          <a class="btn" href="#citation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Cite</a>
           <a class="btn" href="https://github.com/BRAIN-Lab-AI/PULSE">
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg>Code</a>
           <a class="btn" href="checkpoints/README.md">
@@ -368,7 +372,7 @@
       <a class="dl" href="https://github.com/BRAIN-Lab-AI/PULSE"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5A11.5 11.5 0 0 0 .5 12a11.5 11.5 0 0 0 7.9 10.9c.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.4 11.4 0 0 1 6 0C17 4.7 18 5 18 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5A11.5 11.5 0 0 0 23.5 12 11.5 11.5 0 0 0 12 .5z"/></svg><b>Code</b><span>GitHub repository</span></a>
       <a class="dl" href="checkpoints/README.md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg><b>Weights</b><span>5-fold checkpoints</span></a>
       <a class="dl" href="docs/DATASETS.md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v12c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/></svg><b>Datasets</b><span>ACDC, M&amp;Ms-2, CAMUS</span></a>
-      <a class="dl" href="docs/INSTALL.md"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><b>Docs</b><span>Install and usage</span></a>
+      <a class="dl" href="https://github.com/BRAIN-Lab-AI/PULSE#readme" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M8 9h8M8 13h5"/></svg><b>Docs</b><span>Full README on GitHub</span></a>
     </div>
   </div>
 </section>
@@ -386,8 +390,10 @@
              Clinical Adaptation},
   author  = {Ghouse, Hania and Alsharqi, Maryam and
              Nezami, Farhad and Behzad, Muzammil},
-  journal = {IEEE Journal of Biomedical and Health Informatics (JBHI)},
-  year    = {2026}
+  journal = {IEEE Journal of Biomedical and Health Informatics},
+  year    = {2026},
+  doi     = {10.48550/arXiv.2512.03848},
+  url     = {https://doi.org/10.48550/arXiv.2512.03848}
 }</pre>
     </div>
   </div>
@@ -398,11 +404,11 @@
     <div class="footlinks">
       <a href="https://github.com/BRAIN-Lab-AI/PULSE">GitHub</a>
       <a href="checkpoints/README.md">Weights</a>
-      <a href="docs/INSTALL.md">Documentation</a>
+      <a href="https://github.com/BRAIN-Lab-AI/PULSE#readme">Documentation</a>
       <a href="mailto:muzammil.behzad@kfupm.edu.sa">Contact</a>
     </div>
     <p>Datasets: ACDC, M&amp;Ms-2, Sunnybrook, CAMUS. Backbone: DINOv2 (Meta AI).<br>
-    Built at the <b><a href="https://github.com/BRAIN-Lab-AI/" target="_blank" rel="noopener noreferrer">BRAIN Lab</a></b> with support from KFUPM and SDAIA-KFUPM Joint Research Centre for AI.</p>
+    Built at the <b><a href="https://github.com/BRAIN-Lab-AI/" target="_blank" rel="noopener noreferrer">BRAIN Lab</a></b> with the support of King Fahd University of Petroleum and Minerals (KFUPM) and the SDAIA-KFUPM Joint Research Center for Artificial Intelligence.</p>
   </div>
 </footer>
 
