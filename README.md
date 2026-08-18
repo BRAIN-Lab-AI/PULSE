@@ -3,14 +3,14 @@
 </p>
 
 <p align="center">
-  <b><a href="https://scholar.google.com/citations?user=iVWuM4wAAAAJ&amp;hl=en">Hania Ghouse</a></b><sup>1</sup> &nbsp;
-  <b><a href="https://scholar.google.com/citations?user=ai_buWkAAAAJ&amp;hl=en">Maryam Alsharqi</a></b><sup>2</sup> &nbsp;
-  <b><a href="https://scholar.google.com/citations?user=n-1I8IIAAAAJ&amp;hl=en">Farhad Nezami</a></b><sup>2,3</sup> &nbsp;
-  <b><a href="https://muzammilbehzad.com/">Muzammil Behzad</a></b><sup>1,4</sup>
+  <b><a href="https://scholar.google.com/citations?user=iVWuM4wAAAAJ&amp;hl=en" target="_blank">Hania Ghouse</a></b><sup>1</sup> &nbsp;
+  <b><a href="https://scholar.google.com/citations?user=ai_buWkAAAAJ&amp;hl=en" target="_blank">Maryam Alsharqi</a></b><sup>2</sup> &nbsp;
+  <b><a href="https://scholar.google.com/citations?user=n-1I8IIAAAAJ&amp;hl=en" target="_blank">Farhad Nezami</a></b><sup>2,3</sup> &nbsp;
+  <b><a href="https://muzammilbehzad.com/" target="_blank">Muzammil Behzad</a></b><sup>1,4</sup>
 </p>
 
 <p align="center">
-  <sup>1</sup>KFUPM &nbsp; <sup>2</sup>Institute for Medical Engineering and Science, MIT &nbsp; <sup>3</sup>Harvard Medical School &nbsp; <sup>4</sup>KFUPM-SDAIA Joint Research Centre for AI
+  <sup>1</sup>KFUPM &nbsp; <sup>2</sup>Massachusetts Institute of Technology (MIT) &nbsp; <sup>3</sup>Harvard Medical School, Harvard University &nbsp; <sup>4</sup>SDAIA-KFUPM Joint Research Center for Artificial Intelligence
 </p>
 
 <p align="center">
