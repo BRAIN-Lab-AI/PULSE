@@ -32,7 +32,6 @@
   <img src="https://img.shields.io/badge/python-3.10-3776ab?logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/License-MIT-16a34a"/>
   <img src="https://img.shields.io/github/stars/BRAIN-Lab-AI/PULSE?style=social"/>
-  <a href="https://sa.linkedin.com/in/hania-ghouse"><img src="https://img.shields.io/badge/LinkedIn-Hania%20Ghouse-0a66c2?logo=linkedin&logoColor=white"/></a>
 </p>
 
 <p align="center">
