@@ -14,6 +14,12 @@
 </p>
 
 <p align="center">
+  <sup>*</sup><b>Corresponding email:</b> 
+  <a href="mailto: muzammil.behzad@kfupm.edu.sa">muzammil.behzad@kfupm.edu.sa</a>
+
+</p>
+
+<p align="center">
   <a href="https://doi.org/10.48550/arXiv.2512.03848">Paper</a> &nbsp;|&nbsp;
   <a href="https://brain-lab-ai.github.io/PULSE/">Project Page</a> &nbsp;|&nbsp;
   <a href="checkpoints/README.md">Pretrained Weights</a> &nbsp;|&nbsp;
