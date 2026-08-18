@@ -3,10 +3,10 @@
 </p>
 
 <p align="center">
-  <b><a href="https://scholar.google.com/citations?user=iVWuM4wAAAAJ&amp;hl=en" target="_blank">Hania Ghouse</a></b><sup>1</sup> &nbsp;
-  <b><a href="https://scholar.google.com/citations?user=ai_buWkAAAAJ&amp;hl=en" target="_blank">Maryam Alsharqi</a></b><sup>2</sup> &nbsp;
-  <b><a href="https://scholar.google.com/citations?user=n-1I8IIAAAAJ&amp;hl=en" target="_blank">Farhad Nezami</a></b><sup>2,3</sup> &nbsp;
-  <b><a href="https://muzammilbehzad.com/" target="_blank">Muzammil Behzad</a></b><sup>1,4</sup>
+  <b><a href="https://scholar.google.com/citations?user=iVWuM4wAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Hania Ghouse</a></b><sup>1</sup> &nbsp;
+  <b><a href="https://scholar.google.com/citations?user=ai_buWkAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Maryam Alsharqi</a></b><sup>2</sup> &nbsp;
+  <b><a href="https://scholar.google.com/citations?user=n-1I8IIAAAAJ&amp;hl=en" target="_blank" rel="noopener noreferrer">Farhad Nezami</a></b><sup>2,3</sup> &nbsp;
+  <b><a href="https://muzammilbehzad.com/" target="_blank" rel="noopener noreferrer">Muzammil Behzad</a></b><sup>1,4</sup>
 </p>
 
 <p align="center">
