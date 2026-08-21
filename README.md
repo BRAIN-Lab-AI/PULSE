@@ -20,7 +20,7 @@
 </p>
 
 <p align="center">
-  <a href="https://doi.org/10.48550/arXiv.2512.03848">Paper</a> &nbsp;|&nbsp;
+  <a href="https://ieeexplore.ieee.org/document/11660344">Paper</a> &nbsp;|&nbsp;
   <a href="https://brain-lab-ai.github.io/PULSE/">Project Page</a> &nbsp;|&nbsp;
   <a href="checkpoints/README.md">Pretrained Weights</a> &nbsp;|&nbsp;
   <a href="https://huggingface.co/hg-0403/PULSE">Hugging Face</a> &nbsp;|&nbsp;
@@ -33,7 +33,7 @@
   <a href="https://brain-lab-ai.github.io/PULSE/"><img src="https://img.shields.io/badge/Project-Page-1560bd?logo=githubpages&logoColor=white"/></a>
   <a href="https://github.com/BRAIN-Lab-AI/PULSE/releases/tag/v1.0"><img src="https://img.shields.io/badge/Weights-v1.0-0ea5a6?logo=pytorch&logoColor=white"/></a>
   <a href="https://huggingface.co/hg-0403/PULSE"><img src="https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-ffcc4d"/></a>
-  <a href="https://doi.org/10.48550/arXiv.2512.03848"><img src="https://img.shields.io/badge/Paper-IEEE%20JBHI%202026-6a5ae0"/></a>
+  <a href="https://ieeexplore.ieee.org/document/11660344"><img src="https://img.shields.io/badge/Paper-IEEE%20JBHI%202026-6a5ae0"/></a>
   <a href="https://doi.org/10.48550/arXiv.2512.03848"><img src="https://img.shields.io/badge/arXiv-2512.03848-b31b1b?logo=arxiv&logoColor=white"/></a>
   <img src="https://img.shields.io/badge/python-3.10-3776ab?logo=python&logoColor=white"/>
   <img src="https://img.shields.io/badge/License-MIT-16a34a"/>
@@ -324,8 +324,8 @@ Inside `pulse/`:
   author  = {Ghouse, Hania and Alsharqi, Maryam and Nezami, Farhad and Behzad, Muzammil},
   journal = {IEEE Journal of Biomedical and Health Informatics},
   year    = {2026},
-  doi     = {10.48550/arXiv.2512.03848},
-  url     = {https://doi.org/10.48550/arXiv.2512.03848}
+  doi     = {10.1109/JBHI.2026.3725919},
+  url     = {https://ieeexplore.ieee.org/document/11660344}
 }
 ```
 
